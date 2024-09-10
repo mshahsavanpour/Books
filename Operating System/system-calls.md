@@ -21,6 +21,11 @@ Here’s why system calls are important:
 
 ### Key Process-Related System Calls
 
+<p align="center">
+    <img src="image/system-calls/Types-of-System-Calls.png"/>
+</p>
+
+
 1. **fork()**  
    The `fork()` system call creates a new process by duplicating the calling process. The new process, known as the "child," shares much of its state with the parent but has its own address space. The child can run independently of the parent, making `fork()` the foundation for creating concurrent or parallel programs.
 
