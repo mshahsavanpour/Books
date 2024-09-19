@@ -7,7 +7,7 @@ Virtualization is an application of the **layering principle**, enforcing modula
 
 ## 1.2 Virtual Machines
 
-A Virtual Machine is a **completely encapsulated compute environment** decoupled from the actual physical hardware by a layer of abstraction provided by the virtualization of the processor, memory, and I/O subsystems. Virtual machines operate their own operating systems and applications in isolation to one another.
+A Virtual Machine is a **completely encapsulated compute environment** decoupled from the actual physical hardware by a layer of abstraction provided by the virtualization of the processor, memory, and I/O subsystems. Virtual machines operate their own operating systems and applications in isolation from one another.
 
 ## 1.3 Hypervisor
 
@@ -28,7 +28,7 @@ These principles reduce complexity, enhance operational simplicity, and let the 
 
 Virtualization is not limited to virtual machines; it is a general paradigm that permeates modern computer architecture, operating systems, and I/O subsystems.
 
-Computer Architecture: Virtual memory employs memory management units (MMUs) to abstract the physical memory into virtual memory. Depending on this, multiple mappings of physical memory are possible, and the system functions transparently with these multiple mappings.
+**Computer Architecture**: Virtual memory employs memory management units (MMUs) to abstract the physical memory into virtual memory. Depending on this, multiple mappings of physical memory are possible, and the system functions transparently with these multiple mappings.
 
 - **Operating Systems**: The OS provides these abstracted CPU, memory, and I/O resources to multiple applications running parallel through virtualization.
   
@@ -83,6 +83,9 @@ Virtualization offers several advantages in today's IT systems:
 Diverse Operating System: Multiples of OS can be run on one machine; this enhances flexibility during the development and testing stages of software.
 
 • **Server Consolidation**: Virtual machines allow the consolidation of several servers, which reduces hardware costs while enhancing resource utilization.
+
 • **Rapid Provisioning**: Virtual machines are fast to be created and deployed, making the IT function agile.
+
 • **Security**: Hypervisors offer an additional layer of management involved in security and monitoring without interfering with the guest operating system.
+
 • **High Availability**: Virtual machines maximize fault tolerance due to failover and migration between physical hosts with no disruption.
