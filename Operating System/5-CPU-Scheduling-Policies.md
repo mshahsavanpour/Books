@@ -50,6 +50,7 @@ Another name is Shortest Remaining Time First (SRTF). STCF is the preemptive ver
 - Best for reducing average turn around time when all the processes arrive at different times.
 **Drawbacks:**
 - Needs to know the exact remaining time, which is not possible practically.
+
 **Example:**
 - Suppose that A enters at 0 ms and has a burst period of 100 ms. B and C enter after 10 ms each with burst time 10 ms; STCF will preempt A and shall allow B and C to finish so that on an average, turnaround time reduces .
 
