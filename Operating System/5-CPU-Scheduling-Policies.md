@@ -40,7 +40,7 @@ SJF always chooses the process with the shortest execution time. It is a nonpree
     <img src="image/Scheduling/sjf_2.png"/>
 </p>
 
-**Example:
+**Example:**
 In the system where A, B and C have the burst times of 100ms, 10ms, and 10ms, SJF will schedule B and C before A. That will decrease the average time from start to finish .
 
 ##### 1.3 Shortest Time-to-Completion First (STCF)
