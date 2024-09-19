@@ -94,16 +94,16 @@ MLFQ changes the priority of the processes dynamically based on their behavior. 
 
 #### 2. Scheduling Metrics
 
-**2.1 Turnaround Time:** 
+##### 2.1 Turnaround Time:
 The total time taken for a process from arrival to completion. Lower turnaround time is generally desirable.
 
-**2.2 Response Time:**
+##### 2.2 Response Time:
 The time between the arrival of a process and its first scheduling. This is an important performance measure for interactive systems where quick responses to user inputs are expected.
 
-**2.3 CPU Utilization:** 
+##### 2.3 CPU Utilization:
 The percentage of time the CPU spends in the actual execution of processes. The higher the CPU utilization, the better the system performance.
 
-**2.4 Fairness:** 
+##### 2.4 Fairness:
 Each process gets a fair share of the CPU. No single process is starved of CPU.
 
 #### 3. MLFQ Implementation in Real Systems
