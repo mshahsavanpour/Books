@@ -106,12 +106,92 @@ The percentage of time the CPU spends in the actual execution of processes. The 
 ## 2.4 Fairness:
 Each process gets a fair share of the CPU. No single process is starved of CPU.
 
-# 3. MLFQ Implementation in Real Systems
-In practice, wherever applicable, MLFQ is widely used-for instance, in Linux and BSD variants. It dynamically changes the priorities of the processes according to the characteristics of the workload that is observed and therefore adapts to workload types.
+# 3. Multi-Level Feedback Queue (MLFQ)
 
-- **Linux MLFQ:**
- • Multiple levels of priority exist, whereby a newly created process is inserted in high-priority queues.
- • CPU-bound processes are slowly demoted into lower priority queues, whereas interactive tasks remain in high-order priority queues.
+## 3.1 Overview
 
-- **Solaris Time-Sharing Scheduler:**
- • Can be tuned via priority tables, which enable fine-grain adjustment of scheduling behavior depending on different queues.
+The Multi-Level Feedback Queue (MLFQ) scheduler dynamically adjusts the priority of processes based on their behavior and execution history. It was first introduced by Corbato et al. in 1962 as part of the Compatible Time-Sharing System (CTSS) and has since evolved through various implementations in modern operating systems.
+
+## 3.2 Objectives
+
+MLFQ aims to optimize two main criteria:
+1. **Turnaround Time**: Prioritize short jobs, akin to Shortest Job First (SJF).
+2. **Response Time**: Make the system responsive to interactive processes.
+
+## 3.3 Basic Rules and Mechanism
+
+MLFQ consists of several priority queues, where each queue represents a different priority level. The scheduler follows these rules:
+
+1. **Rule 1**: If Priority(A) > Priority(B), process A runs before process B.
+2. **Rule 2**: If Priority(A) = Priority(B), both run in a round-robin fashion using the time slice of the queue.
+
+The priority of a process is not fixed. MLFQ modifies the priority based on the process's behavior:
+
+- **Interactive Processes**: Processes frequently relinquishing the CPU (e.g., waiting for I/O) maintain a high priority.
+- **CPU-bound Processes**: Processes using the CPU for extended periods are moved to lower priority queues.
+
+## 3.4 Priority Adjustments
+
+The priority of a process changes based on the following rules:
+
+1. **Rule 3**: A new job is placed at the highest priority (top queue).
+2. **Rule 4a**: If a job uses up its time slice, its priority is lowered (moved down one queue).
+3. **Rule 4b**: If a job relinquishes the CPU before using its time slice (e.g., for I/O), it remains at the same priority.
+
+## 3.5 Addressing Starvation and Fairness
+
+MLFQ incorporates mechanisms to prevent starvation and ensure fair CPU allocation:
+
+1. **Priority Boost**: All processes are periodically moved to the highest priority queue to prevent starvation (Rule 5).
+2. **Better Accounting**: To prevent gaming the scheduler, MLFQ tracks total CPU time used, ensuring that processes are demoted even if they relinquish the CPU frequently.
+
+## 3.6 Tuning Parameters
+
+- **Number of Queues**: Determines the granularity of priority levels.
+- **Time Slice**: Duration a process runs before being preempted.
+- **Priority Boost Interval**: Frequency at which all processes are boosted to the top queue.
+
+The choice of these parameters significantly impacts the performance and fairness of the scheduling.
+
+
+# 4. Lottery Scheduling
+
+## 4.1 Overview
+
+Lottery Scheduling is a proportional-share scheduling algorithm that provides each process with a probability of running proportional to the number of tickets it holds. It was introduced by Waldspurger and Weihl in 1994.
+
+## 4.2 Basic Concept
+
+Each process is allocated a number of tickets representing its share of the CPU. A lottery is held at each scheduling decision point, and the process holding the winning ticket is selected to run. This probabilistic approach aims to approximate fair resource distribution over time.
+
+## 4.3 Ticket Mechanisms
+
+- **Ticket Assignment**: Processes receive tickets proportional to their required CPU share.
+- **Ticket Currency**: Users can allocate tickets within their own processes, which are converted to global values for fair distribution.
+- **Ticket Transfer**: Allows processes to transfer their tickets to other processes, useful in client-server models.
+- **Ticket Inflation**: A process can temporarily increase its tickets, reflecting a higher need for CPU time.
+
+## 4.4 Implementation
+
+Lottery Scheduling requires a random number generator and a data structure to track processes and their tickets. The scheduler draws a random number within the range of total tickets, and the process corresponding to the winning ticket runs.
+
+## 4.5 Stride Scheduling
+
+Stride Scheduling is a deterministic alternative to Lottery Scheduling. It uses "strides," inversely proportional to the number of tickets, to schedule processes precisely according to their share of the CPU.
+
+## 4.6 Use Cases and Limitations
+
+Lottery Scheduling is ideal for systems where dynamic and proportional resource allocation is required. However, it can be less predictable than deterministic schedulers like MLFQ or Stride Scheduling, especially over short periods.
+
+---
+
+# 5. Comparison of MLFQ and Lottery Scheduling
+
+| **Feature**                   | **MLFQ**                                                  | **Lottery Scheduling**                             |
+|-------------------------------|----------------------------------------------------------|---------------------------------------------------|
+| **Scheduling Type**           | Priority-based, dynamic adjustment                       | Proportional-share, probabilistic                 |
+| **Main Objective**            | Optimize turnaround and response time                    | Fair CPU distribution proportional to ticket share|
+| **Adaptability**              | Adjusts based on process behavior                        | Allocates based on assigned tickets               |
+| **Fairness**                  | Fair to both interactive and CPU-bound processes         | Fair in the long run but not guaranteed in short term |
+| **Implementation Complexity** | Requires multiple queues and rules                       | Requires random number generator and ticket management|
+| **Use Cases**                 | General-purpose systems, interactive workloads           | Virtualized environments, controlled resource allocation|
